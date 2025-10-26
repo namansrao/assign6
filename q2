@@ -1,0 +1,51 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+void displayWithHeadRepeated(Node* head) {
+    if (head == NULL) {
+        cout << "List is empty\n";
+        return;
+    }
+    
+    Node* temp = head;
+    do {
+        cout << temp->data << " ";
+        temp = temp->next;
+    } while (temp != head);
+    
+    cout << head->data << "\n"; // Display head again
+}
+
+int main() {
+    // Create circular linked list: 20 -> 100 -> 40 -> 80 -> 60
+    Node* head = new Node();
+    head->data = 20;
+    
+    Node* n2 = new Node();
+    n2->data = 100;
+    
+    Node* n3 = new Node();
+    n3->data = 40;
+    
+    Node* n4 = new Node();
+    n4->data = 80;
+    
+    Node* n5 = new Node();
+    n5->data = 60;
+    
+    head->next = n2;
+    n2->next = n3;
+    n3->next = n4;
+    n4->next = n5;
+    n5->next = head; // Make it circular
+    
+    cout << "Output: ";
+    displayWithHeadRepeated(head);
+    
+    return 0;
+}

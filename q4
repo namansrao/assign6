@@ -1,0 +1,81 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    char data;
+    Node* prev;
+    Node* next;
+};
+
+bool isPalindrome(Node* head) {
+    if (head == NULL) {
+        return true;
+    }
+    
+    // Find the tail
+    Node* tail = head;
+    while (tail->next != NULL) {
+        tail = tail->next;
+    }
+    
+    // Compare from both ends
+    Node* left = head;
+    Node* right = tail;
+    
+    while (left != right && left->prev != right) {
+        if (left->data != right->data) {
+            return false;
+        }
+        left = left->next;
+        right = right->prev;
+    }
+    
+    return true;
+}
+
+int main() {
+    // Create DLL: r <-> a <-> c <-> e <-> c <-> a <-> r
+    Node* head = new Node();
+    head->data = 'r';
+    head->prev = NULL;
+    
+    Node* n2 = new Node();
+    n2->data = 'a';
+    
+    Node* n3 = new Node();
+    n3->data = 'c';
+    
+    Node* n4 = new Node();
+    n4->data = 'e';
+    
+    Node* n5 = new Node();
+    n5->data = 'c';
+    
+    Node* n6 = new Node();
+    n6->data = 'a';
+    
+    Node* n7 = new Node();
+    n7->data = 'r';
+    n7->next = NULL;
+    
+    head->next = n2;
+    n2->prev = head;
+    n2->next = n3;
+    n3->prev = n2;
+    n3->next = n4;
+    n4->prev = n3;
+    n4->next = n5;
+    n5->prev = n4;
+    n5->next = n6;
+    n6->prev = n5;
+    n6->next = n7;
+    n7->prev = n6;
+    
+    if (isPalindrome(head)) {
+        cout << "True\n";
+    } else {
+        cout << "False\n";
+    }
+    
+    return 0;
+}

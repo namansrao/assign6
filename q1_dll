@@ -1,0 +1,201 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* prev;
+    Node* next;
+};
+
+class DoublyLinkedList {
+private:
+    Node* head;
+    
+public:
+    DoublyLinkedList() {
+        head = NULL;
+    }
+    
+    void insertAtBeginning(int value) {
+        Node* newNode = new Node();
+        newNode->data = value;
+        newNode->prev = NULL;
+        newNode->next = head;
+        
+        if (head != NULL) {
+            head->prev = newNode;
+        }
+        head = newNode;
+        cout << "Inserted " << value << " at beginning\n";
+    }
+    
+    void insertAtEnd(int value) {
+        Node* newNode = new Node();
+        newNode->data = value;
+        newNode->next = NULL;
+        
+        if (head == NULL) {
+            newNode->prev = NULL;
+            head = newNode;
+            cout << "Inserted " << value << " at end\n";
+            return;
+        }
+        
+        Node* temp = head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+        newNode->prev = temp;
+        cout << "Inserted " << value << " at end\n";
+    }
+    
+    void insertAfter(int afterValue, int value) {
+        Node* temp = head;
+        while (temp != NULL && temp->data != afterValue) {
+            temp = temp->next;
+        }
+        
+        if (temp == NULL) {
+            cout << "Node with value " << afterValue << " not found\n";
+            return;
+        }
+        
+        Node* newNode = new Node();
+        newNode->data = value;
+        newNode->next = temp->next;
+        newNode->prev = temp;
+        
+        if (temp->next != NULL) {
+            temp->next->prev = newNode;
+        }
+        temp->next = newNode;
+        cout << "Inserted " << value << " after " << afterValue << "\n";
+    }
+    
+    void deleteNode(int value) {
+        if (head == NULL) {
+            cout << "List is empty\n";
+            return;
+        }
+        
+        Node* temp = head;
+        
+        // If head node contains the value
+        if (temp->data == value) {
+            head = temp->next;
+            if (head != NULL) {
+                head->prev = NULL;
+            }
+            delete temp;
+            cout << "Deleted " << value << "\n";
+            return;
+        }
+        
+        // Search for the node
+        while (temp != NULL && temp->data != value) {
+            temp = temp->next;
+        }
+        
+        if (temp == NULL) {
+            cout << "Node with value " << value << " not found\n";
+            return;
+        }
+        
+        // Delete the node
+        if (temp->next != NULL) {
+            temp->next->prev = temp->prev;
+        }
+        if (temp->prev != NULL) {
+            temp->prev->next = temp->next;
+        }
+        delete temp;
+        cout << "Deleted " << value << "\n";
+    }
+    
+    void search(int value) {
+        Node* temp = head;
+        int position = 1;
+        
+        while (temp != NULL) {
+            if (temp->data == value) {
+                cout << "Found " << value << " at position " << position << "\n";
+                return;
+            }
+            temp = temp->next;
+            position++;
+        }
+        cout << value << " not found in list\n";
+    }
+    
+    void display() {
+        if (head == NULL) {
+            cout << "List is empty\n";
+            return;
+        }
+        
+        Node* temp = head;
+        cout << "List: ";
+        while (temp != NULL) {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+        cout << "\n";
+    }
+};
+
+int main() {
+    DoublyLinkedList dll;
+    int choice, value, afterValue;
+    
+    while (1) {
+        cout << "\n=== Doubly Linked List Menu ===\n";
+        cout << "1. Insert at beginning\n";
+        cout << "2. Insert at end\n";
+        cout << "3. Insert after a node\n";
+        cout << "4. Delete a node\n";
+        cout << "5. Search for a node\n";
+        cout << "6. Display list\n";
+        cout << "7. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+        
+        switch (choice) {
+            case 1:
+                cout << "Enter value: ";
+                cin >> value;
+                dll.insertAtBeginning(value);
+                break;
+            case 2:
+                cout << "Enter value: ";
+                cin >> value;
+                dll.insertAtEnd(value);
+                break;
+            case 3:
+                cout << "Insert after which value: ";
+                cin >> afterValue;
+                cout << "Enter value to insert: ";
+                cin >> value;
+                dll.insertAfter(afterValue, value);
+                break;
+            case 4:
+                cout << "Enter value to delete: ";
+                cin >> value;
+                dll.deleteNode(value);
+                break;
+            case 5:
+                cout << "Enter value to search: ";
+                cin >> value;
+                dll.search(value);
+                break;
+            case 6:
+                dll.display();
+                break;
+            case 7:
+                return 0;
+            default:
+                cout << "Invalid choice\n";
+        }
+    }
+    return 0;
+}

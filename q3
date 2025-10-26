@@ -1,0 +1,71 @@
+#include <iostream>
+using namespace std;
+
+struct DLLNode {
+    int data;
+    DLLNode* prev;
+    DLLNode* next;
+};
+
+struct CLLNode {
+    int data;
+    CLLNode* next;
+};
+
+int sizeOfDLL(DLLNode* head) {
+    int count = 0;
+    DLLNode* temp = head;
+    
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    
+    return count;
+}
+
+int sizeOfCLL(CLLNode* head) {
+    if (head == NULL) {
+        return 0;
+    }
+    
+    int count = 0;
+    CLLNode* temp = head;
+    
+    do {
+        count++;
+        temp = temp->next;
+    } while (temp != head);
+    
+    return count;
+}
+
+int main() {
+    // Example for DLL
+    DLLNode* dllHead = new DLLNode();
+    dllHead->data = 10;
+    dllHead->prev = NULL;
+    
+    DLLNode* dllN2 = new DLLNode();
+    dllN2->data = 20;
+    
+    dllHead->next = dllN2;
+    dllN2->prev = dllHead;
+    dllN2->next = NULL;
+    
+    cout << "Size of Doubly Linked List: " << sizeOfDLL(dllHead) << "\n";
+    
+    // Example for CLL
+    CLLNode* cllHead = new CLLNode();
+    cllHead->data = 10;
+    
+    CLLNode* cllN2 = new CLLNode();
+    cllN2->data = 20;
+    
+    cllHead->next = cllN2;
+    cllN2->next = cllHead;
+    
+    cout << "Size of Circular Linked List: " << sizeOfCLL(cllHead) << "\n";
+    
+    return 0;
+}
